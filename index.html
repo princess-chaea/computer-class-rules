@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,16 +8,49 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.2.2/wordcloud2.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
     <style>
-        body { font-family: 'Nanum Gothic', sans-serif; background-color: #f0f7ff; }
-        .rule-card { transition: transform 0.2s; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-        .rule-card:hover { transform: translateY(-5px); }
-        #wordcloud-canvas { width: 100%; height: 400px; background: white; border-radius: 1.5rem; }
-        .filter-btn-active { background-color: #2563eb !important; color: white !important; font-weight: bold; transform: scale(1.05); }
-        .loading-overlay { background: rgba(255, 255, 255, 0.85); z-index: 20; }
-        .modal-overlay { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); }
+        body {
+            font-family: 'Nanum Gothic', sans-serif;
+            background-color: #f0f7ff;
+        }
+
+        .rule-card {
+            transition: transform 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .rule-card:hover {
+            transform: translateY(-5px);
+        }
+
+        #wordcloud-canvas {
+            width: 100%;
+            height: 400px;
+            background: white;
+            border-radius: 1.5rem;
+        }
+
+        .filter-btn-active {
+            background-color: #2563eb !important;
+            color: white !important;
+            font-weight: bold;
+            transform: scale(1.05);
+        }
+
+        .loading-overlay {
+            background: rgba(255, 255, 255, 0.85);
+            z-index: 20;
+        }
+
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
     </style>
 </head>
+
 <body class="p-4 md:p-8">
     <div class="max-w-5xl mx-auto">
         <!-- Header -->
@@ -60,15 +94,19 @@
                 <h2 class="text-2xl font-bold text-gray-800 flex items-center">
                     <span class="mr-3">☁️</span> 우리 모두의 다짐 (AI 분석)
                 </h2>
-                <button onclick="openAuthModal()" class="text-xs bg-blue-50 text-blue-600 px-4 py-2 rounded-full hover:bg-blue-100 transition font-bold border border-blue-200">AI 새로 분석</button>
+                <button onclick="openAuthModal()"
+                    class="text-xs bg-blue-50 text-blue-600 px-4 py-2 rounded-full hover:bg-blue-100 transition font-bold border border-blue-200">AI
+                    새로 분석</button>
             </div>
             <div class="relative">
                 <canvas id="wordcloud-canvas"></canvas>
-                <div id="ai-loading" class="hidden absolute inset-0 flex flex-col items-center justify-center loading-overlay rounded-2xl">
+                <div id="ai-loading"
+                    class="hidden absolute inset-0 flex flex-col items-center justify-center loading-overlay rounded-2xl">
                     <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
                     <p class="text-blue-600 font-bold">제미나이가 전체 다짐을 분석하고 있어요...</p>
                 </div>
-                <div id="initial-cloud-msg" class="absolute inset-0 flex items-center justify-center bg-gray-50/50 rounded-2xl">
+                <div id="initial-cloud-msg"
+                    class="absolute inset-0 flex items-center justify-center bg-gray-50/50 rounded-2xl">
                     <p class="text-gray-400 font-bold">상단 'AI 새로 분석'을 누르면 워드클라우드가 생성됩니다.</p>
                 </div>
             </div>
@@ -83,17 +121,29 @@
             <form id="pledgeForm" class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <select id="inputGrade" class="p-4 rounded-2xl text-gray-800 outline-none font-bold" required>
                     <option value="">학년 선택</option>
-                    <option value="1">1학년</option><option value="2">2학년</option><option value="3">3학년</option>
-                    <option value="4">4학년</option><option value="5">5학년</option><option value="6">6학년</option>
+                    <option value="1">1학년</option>
+                    <option value="2">2학년</option>
+                    <option value="3">3학년</option>
+                    <option value="4">4학년</option>
+                    <option value="5">5학년</option>
+                    <option value="6">6학년</option>
                 </select>
                 <select id="inputClass" class="p-4 rounded-2xl text-gray-800 outline-none font-bold" required>
                     <option value="">반 선택</option>
-                    <option value="1">1반</option><option value="2">2반</option><option value="3">3반</option>
-                    <option value="4">4반</option><option value="5">5반</option><option value="6">6반</option>
+                    <option value="1">1반</option>
+                    <option value="2">2반</option>
+                    <option value="3">3반</option>
+                    <option value="4">4반</option>
+                    <option value="5">5반</option>
+                    <option value="6">6반</option>
                 </select>
-                <input type="text" id="inputName" placeholder="이름" class="p-4 rounded-2xl text-gray-800 outline-none font-bold md:col-span-2" required>
-                <textarea id="inputPledge" rows="2" placeholder="어떤 약속을 지킬 건가요? 솔직하게 적어주세요!" class="md:col-span-4 p-4 rounded-2xl text-gray-800 outline-none" required></textarea>
-                <button type="submit" id="submitBtn" class="md:col-span-4 bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-extrabold py-4 rounded-2xl transition-all shadow-lg transform hover:scale-[1.01]">다짐 등록하고 전교생에게 알리기</button>
+                <input type="text" id="inputName" placeholder="이름"
+                    class="p-4 rounded-2xl text-gray-800 outline-none font-bold md:col-span-2" required>
+                <textarea id="inputPledge" rows="2" placeholder="어떤 약속을 지킬 건가요? 솔직하게 적어주세요!"
+                    class="md:col-span-4 p-4 rounded-2xl text-gray-800 outline-none" required></textarea>
+                <button type="submit" id="submitBtn"
+                    class="md:col-span-4 bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-extrabold py-4 rounded-2xl transition-all shadow-lg transform hover:scale-[1.01]">다짐
+                    등록하고 전교생에게 알리기</button>
             </form>
         </section>
 
@@ -102,18 +152,20 @@
             <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center">
                 <span class="mr-3">💬</span> 친구들의 다짐 엿보기
             </h2>
-            
+
             <div class="space-y-6 mb-10">
                 <div>
                     <p class="text-sm font-bold text-gray-500 mb-3">학년 선택</p>
                     <div id="gradeButtons" class="flex flex-wrap gap-2">
-                        <button onclick="filterByGrade('')" data-val="" class="grade-btn filter-btn-active px-5 py-2 rounded-xl border-2 border-gray-100 bg-gray-50 text-gray-600 transition">전체</button>
+                        <button onclick="filterByGrade('')" data-val=""
+                            class="grade-btn filter-btn-active px-5 py-2 rounded-xl border-2 border-gray-100 bg-gray-50 text-gray-600 transition">전체</button>
                     </div>
                 </div>
                 <div>
                     <p class="text-sm font-bold text-gray-500 mb-3">반 선택 (6개 반)</p>
                     <div id="classButtons" class="flex flex-wrap gap-2">
-                        <button onclick="filterByClass('')" data-val="" class="class-btn filter-btn-active px-5 py-2 rounded-xl border-2 border-gray-100 bg-gray-50 text-gray-600 transition">전체</button>
+                        <button onclick="filterByClass('')" data-val=""
+                            class="class-btn filter-btn-active px-5 py-2 rounded-xl border-2 border-gray-100 bg-gray-50 text-gray-600 transition">전체</button>
                     </div>
                 </div>
             </div>
@@ -129,15 +181,20 @@
         <div class="bg-white rounded-3xl p-8 w-full max-w-sm shadow-2xl">
             <h3 class="text-xl font-bold text-gray-800 mb-2">선생님 인증</h3>
             <p class="text-gray-500 text-sm mb-6">AI 분석 갱신을 위해 비밀번호를 입력하세요.</p>
-            <input type="password" id="adminPassword" placeholder="비밀번호 4자리" class="w-full p-4 bg-gray-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 mb-4 text-center text-2xl tracking-widest font-bold">
+            <input type="password" id="adminPassword" placeholder="비밀번호 4자리"
+                class="w-full p-4 bg-gray-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 mb-4 text-center text-2xl tracking-widest font-bold">
             <div class="flex gap-2">
-                <button onclick="closeAuthModal()" class="flex-1 py-3 text-gray-500 font-bold hover:bg-gray-100 rounded-xl transition">취소</button>
-                <button onclick="checkAuthAndRun()" class="flex-1 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition shadow-lg">확인</button>
+                <button onclick="closeAuthModal()"
+                    class="flex-1 py-3 text-gray-500 font-bold hover:bg-gray-100 rounded-xl transition">취소</button>
+                <button onclick="checkAuthAndRun()"
+                    class="flex-1 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition shadow-lg">확인</button>
             </div>
         </div>
     </div>
 
-    <div id="toast" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-8 py-3 rounded-full opacity-0 transition-all z-50 font-bold shadow-2xl"></div>
+    <div id="toast"
+        class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-8 py-3 rounded-full opacity-0 transition-all z-50 font-bold shadow-2xl">
+    </div>
 
     <script>
         // [중요] 배포한 Google Apps Script의 웹 앱 URL을 여기에 입력하세요.
@@ -154,7 +211,7 @@
         function initFilterButtons() {
             const gradeContainer = document.getElementById('gradeButtons');
             const classContainer = document.getElementById('classButtons');
-            for(let i=1; i<=6; i++) {
+            for (let i = 1; i <= 6; i++) {
                 const btn = document.createElement('button');
                 btn.innerText = `${i}학년`;
                 btn.className = 'grade-btn px-5 py-2 rounded-xl border-2 border-gray-100 bg-gray-50 text-gray-600 transition hover:bg-gray-100';
@@ -162,7 +219,7 @@
                 btn.setAttribute('data-val', i);
                 gradeContainer.appendChild(btn);
             }
-            for(let i=1; i<=6; i++) {
+            for (let i = 1; i <= 6; i++) {
                 const btn = document.createElement('button');
                 btn.innerText = `${i}반`;
                 btn.className = 'class-btn px-5 py-2 rounded-xl border-2 border-gray-100 bg-gray-50 text-gray-600 transition hover:bg-gray-100';
@@ -186,7 +243,7 @@
 
         function updateButtonStyles(className, val) {
             document.querySelectorAll(`.${className}`).forEach(btn => {
-                if(btn.getAttribute('data-val') === val) {
+                if (btn.getAttribute('data-val') === val) {
                     btn.classList.add('filter-btn-active');
                 } else {
                     btn.classList.remove('filter-btn-active');
@@ -204,6 +261,11 @@
             const url = new URL(GAS_API_URL);
             url.searchParams.append('action', action);
             Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+
+            if (action === 'getAIKeywords' && window.tempAdminPw) {
+                url.searchParams.append('pw', window.tempAdminPw);
+                delete window.tempAdminPw;
+            }
 
             const options = {
                 method: method,
@@ -227,7 +289,7 @@
         async function loadListData() {
             const listEl = document.getElementById('pledgeList');
             listEl.innerHTML = '<p class="col-span-full text-center text-gray-400 py-20 animate-pulse">선택한 친구들의 다짐을 가져오는 중...</p>';
-            
+
             const data = await callApi('getPledges', { grade: selectedGrade, ban: selectedClass });
             if (data) renderPledgeList(data);
         }
@@ -263,6 +325,7 @@
         function checkAuthAndRun() {
             const pw = document.getElementById('adminPassword').value;
             if (pw === '6699') {
+                window.tempAdminPw = pw;
                 closeAuthModal();
                 updateGlobalWordCloud();
             } else {
@@ -275,7 +338,7 @@
             document.getElementById('initial-cloud-msg').classList.add('hidden');
             const loading = document.getElementById('ai-loading');
             loading.classList.remove('hidden');
-            
+
             const keywords = await callApi('getAIKeywords');
             if (keywords) {
                 renderWordCloud(keywords);
@@ -287,6 +350,14 @@
 
         function renderWordCloud(keywords) {
             document.getElementById('ai-loading').classList.add('hidden');
+
+            if (!Array.isArray(keywords)) {
+                console.error("Invalid keywords format:", keywords);
+                showToast("❌ AI 분석 결과를 불러오지 못했습니다.");
+                document.getElementById('initial-cloud-msg').classList.remove('hidden');
+                return;
+            }
+
             const list = keywords.map(k => [k.word, k.weight]);
             WordCloud(document.getElementById('wordcloud-canvas'), {
                 list: list,
@@ -331,4 +402,5 @@
         }
     </script>
 </body>
+
 </html>
