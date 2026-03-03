@@ -206,7 +206,16 @@
         window.onload = () => {
             initFilterButtons();
             loadListData();
+            loadInitialAIKeywords(); // 최초 로드시 최근 분석 결과 가져오기
         };
+
+        async function loadInitialAIKeywords() {
+            const data = await callApi('getLatestAIKeywords');
+            if (data && Array.isArray(data) && data.length > 0) {
+                document.getElementById('initial-cloud-msg').classList.add('hidden');
+                renderWordCloud(data);
+            }
+        }
 
         function initFilterButtons() {
             const gradeContainer = document.getElementById('gradeButtons');
@@ -353,21 +362,29 @@
 
             if (!Array.isArray(keywords)) {
                 console.error("Invalid keywords format:", keywords);
-                showToast("❌ AI 분석 결과를 불러오지 못했습니다.");
-                document.getElementById('initial-cloud-msg').classList.remove('hidden');
                 return;
             }
 
             const list = keywords.map(k => [k.word, k.weight]);
+
+            // 아기자기하고 예쁜 색상 팔레트
+            const colors = ['#60a5fa', '#34d399', '#fbbf24', '#a78bfa', '#f87171', '#22d3ee', '#f472b6'];
+
             WordCloud(document.getElementById('wordcloud-canvas'), {
                 list: list,
-                gridSize: 15,
-                weightFactor: 2.2,
+                gridSize: 10,
+                weightFactor: 2.5,
                 fontFamily: 'Nanum Gothic, sans-serif',
-                color: 'random-dark',
-                rotateRatio: 0,
+                fontWeight: '800',
+                color: () => colors[Math.floor(Math.random() * colors.length)],
+                rotateRatio: 0.3,
+                rotationSteps: 2,
                 backgroundColor: '#ffffff',
-                shape: 'circle'
+                shape: 'circle',
+                ellipticity: 0.9,
+                drawOutOfBound: false,
+                shrinkToFit: true,
+                shuffle: true
             });
         }
 
